@@ -91,14 +91,26 @@ export default function Home() {
       ════════════════════════════════════════════════════ */}
       <section className="relative min-h-screen bg-pitch flex flex-col justify-end overflow-hidden">
 
-        {/* Subtle dot-grid texture */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: "radial-gradient(circle, #f0ebe1 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
+        {/* Court line pattern */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-end overflow-hidden">
+          <svg
+            viewBox="0 0 440 880"
+            fill="none"
+            className="h-[110%] w-auto opacity-[0.06] -translate-x-[10%]"
+          >
+            {/* Outer court boundary (44' x 20' proportions) */}
+            <rect x="20" y="40" width="400" height="800" stroke="#F7F9F7" strokeWidth="2.5" />
+            {/* Net / center line */}
+            <line x1="20" y1="440" x2="420" y2="440" stroke="#F7F9F7" strokeWidth="2.5" />
+            {/* Non-volley zone (kitchen) — 7' from net on each side */}
+            <line x1="20" y1="300" x2="420" y2="300" stroke="#F7F9F7" strokeWidth="2" />
+            <line x1="20" y1="580" x2="420" y2="580" stroke="#F7F9F7" strokeWidth="2" />
+            {/* Center service line — top half (service boxes) */}
+            <line x1="220" y1="40" x2="220" y2="300" stroke="#F7F9F7" strokeWidth="2" />
+            {/* Center service line — bottom half (service boxes) */}
+            <line x1="220" y1="580" x2="220" y2="840" stroke="#F7F9F7" strokeWidth="2" />
+          </svg>
+        </div>
 
         {/* Top-right: court count badge */}
         <div className="absolute top-28 right-6 lg:right-10 text-right select-none">
@@ -131,10 +143,10 @@ export default function Home() {
 
           {/* Oversized headline */}
           <h1 className="font-display uppercase leading-[0.88] tracking-[0.02em] text-chalk">
-            <span className="enter block text-[clamp(4.5rem,14vw,13rem)]" style={{ animationDelay: "0.15s" }}>PLAY</span>
-            <span className="enter block text-[clamp(4.5rem,14vw,13rem)] text-ace" style={{ animationDelay: "0.25s" }}>HARD.</span>
-            <span className="enter block text-[clamp(4.5rem,14vw,13rem)]" style={{ animationDelay: "0.35s" }}>BOOK</span>
-            <span className="enter block text-[clamp(4.5rem,14vw,13rem)]" style={{ animationDelay: "0.45s" }}>FAST.</span>
+            <span className="enter block text-[clamp(4.5rem,14vw,11rem)]" style={{ animationDelay: "0.15s" }}>PLAY</span>
+            <span className="enter block text-[clamp(4.5rem,14vw,11rem)] text-ace" style={{ animationDelay: "0.25s" }}>HARD.</span>
+            <span className="enter block text-[clamp(4.5rem,14vw,11rem)]" style={{ animationDelay: "0.35s" }}>BOOK</span>
+            <span className="enter block text-[clamp(4.5rem,14vw,11rem)]" style={{ animationDelay: "0.45s" }}>FAST.</span>
           </h1>
 
           {/* Sub-row */}
@@ -210,9 +222,8 @@ export default function Home() {
                 02&nbsp;/&nbsp;What We Offer
               </span>
               <h2 className="font-display text-[clamp(2.5rem,7vw,6.5rem)] uppercase tracking-[0.02em] text-pitch leading-[0.9]">
-                Pick Your
+                Pick Your Game
                 <br />
-                <span className="text-pitch/15">Game</span>
               </h2>
             </div>
             <Link
@@ -231,7 +242,7 @@ export default function Home() {
                 className={`
                   bg-chalk p-8 lg:p-10 flex flex-col gap-7
                   transition-all duration-300
-                  hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#0a0a0a] hover:z-10 relative cursor-pointer
+                  hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#1F5D3B] hover:z-10 relative cursor-pointer
                   reveal ${courtsSection.visible ? "visible" : ""}
                 `}
                 style={{ transitionDelay: `${i * 0.12 + 0.1}s` }}
@@ -418,7 +429,7 @@ export default function Home() {
                 `}
                 style={{ transitionDelay: `${i * 0.15}s` }}
               >
-                <div className="font-display text-[5rem] text-ace/20 leading-none mb-8 select-none">
+                <div className="font-display text-[5rem] text-ace/80 leading-none mb-8 select-none">
                   {step.num}
                 </div>
                 <h3 className="font-display text-3xl uppercase tracking-wider text-chalk mb-4">
@@ -464,7 +475,7 @@ export default function Home() {
               <h2 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] uppercase tracking-[0.02em] text-pitch leading-[0.9] mb-14">
                 Find Us.
                 <br />
-                <span className="text-pitch/15">Play Here.</span>
+                <span className=" text-emerald">Play Here.</span>
               </h2>
 
               <div className="space-y-9">
@@ -481,10 +492,10 @@ export default function Home() {
                   { label: "Email", value: "play@trianglesportshub.ph" },
                 ].map(({ label, value }) => (
                   <div key={label}>
-                    <div className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch/35 mb-1.5">
+                    <div className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch mb-1.5">
                       {label}
                     </div>
-                    <div className="font-sans text-sm text-pitch/75 leading-[1.8] whitespace-pre-line">
+                    <div className="font-sans text-sm text-pitch leading-[1.8] whitespace-pre-line">
                       {value}
                     </div>
                   </div>
@@ -496,42 +507,42 @@ export default function Home() {
             <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch/35">
+                  <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch">
                     Name
                   </label>
                   <input
                     type="text"
                     placeholder="Your name"
-                    className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch/25 font-sans"
+                    className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch font-sans"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch/35">
+                  <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch">
                     Email
                   </label>
                   <input
                     type="email"
                     placeholder="your@email.com"
-                    className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch/25 font-sans"
+                    className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch font-sans"
                   />
                 </div>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch/35">
+                <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch">
                   Message
                 </label>
                 <textarea
                   rows={5}
                   placeholder="Ask about court availability, group bookings, or memberships…"
-                  className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch/25 resize-none font-sans"
+                  className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch resize-none font-sans"
                 />
               </div>
 
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="group inline-flex items-center gap-3 bg-pitch text-chalk font-bold text-[11px] tracking-[0.18em] uppercase px-7 py-4 transition-all duration-300 hover:bg-ace hover:text-pitch"
+                  className="group inline-flex items-center gap-3 bg-emerald text-chalk font-bold text-[11px] tracking-[0.18em] uppercase px-7 py-4 transition-all duration-300 hover:bg-ace hover:text-pitch"
                 >
                   Send Message
                   <span className="transition-transform duration-300 group-hover:translate-x-1.5">

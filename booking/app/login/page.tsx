@@ -32,17 +32,17 @@ export default function LoginPage() {
     <div className="flex flex-1 items-center justify-center px-4">
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+          <h1 className="font-display text-4xl uppercase tracking-wide text-chalk">
             Welcome back
           </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-2 font-mono text-[10px] tracking-[0.25em] uppercase text-chalk/40">
             Sign in to your account
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-400">
+            <div className="border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
               {error}
             </div>
           )}
@@ -50,7 +50,7 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="email"
-              className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              className="mb-1.5 block font-mono text-[8px] tracking-[0.35em] uppercase text-chalk/35"
             >
               Email
             </label>
@@ -60,14 +60,14 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="w-full border border-chalk/18 bg-transparent text-chalk text-sm px-4 py-3 outline-none transition-colors focus:border-ace placeholder:text-chalk/25 font-sans"
             />
           </div>
 
           <div>
             <label
               htmlFor="password"
-              className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              className="mb-1.5 block font-mono text-[8px] tracking-[0.35em] uppercase text-chalk/35"
             >
               Password
             </label>
@@ -77,24 +77,24 @@ export default function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="w-full border border-chalk/18 bg-transparent text-chalk text-sm px-4 py-3 outline-none transition-colors focus:border-ace placeholder:text-chalk/25 font-sans"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-zinc-900 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-300"
+            className="w-full bg-ace text-pitch font-bold text-[11px] tracking-[0.18em] uppercase py-3.5 transition-all hover:bg-chalk disabled:opacity-50"
           >
             {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-center font-mono text-[10px] tracking-[0.15em] uppercase text-chalk/40">
           Don&apos;t have an account?{" "}
           <Link
             href="/register"
-            className="font-medium text-zinc-900 dark:text-zinc-50"
+            className="font-bold text-ace transition-colors hover:text-chalk"
           >
             Sign up
           </Link>
