@@ -95,7 +95,7 @@ export default function Home() {
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.04]"
           style={{
-            backgroundImage: "radial-gradient(circle, #f0ebe1 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(circle, #F7F9F7 1px, transparent 1px)",
             backgroundSize: "40px 40px",
           }}
         />
@@ -212,7 +212,7 @@ export default function Home() {
               <h2 className="font-display text-[clamp(2.5rem,7vw,6.5rem)] uppercase tracking-[0.02em] text-pitch leading-[0.9]">
                 Pick Your
                 <br />
-                <span className="text-pitch/15">Game</span>
+                <span className="text-amber">Game</span>
               </h2>
             </div>
             <Link
@@ -231,7 +231,7 @@ export default function Home() {
                 className={`
                   bg-chalk p-8 lg:p-10 flex flex-col gap-7
                   transition-all duration-300
-                  hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#0a0a0a] hover:z-10 relative cursor-pointer
+                  hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#1F5D3B] hover:z-10 relative cursor-pointer
                   reveal ${courtsSection.visible ? "visible" : ""}
                 `}
                 style={{ transitionDelay: `${i * 0.12 + 0.1}s` }}
@@ -461,10 +461,10 @@ export default function Home() {
               <span className="font-mono text-[9px] tracking-[0.35em] uppercase text-pitch/35 block mb-4">
                 05&nbsp;/&nbsp;Contact
               </span>
-              <h2 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] uppercase tracking-[0.02em] text-pitch leading-[0.9] mb-14">
+              <h2 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] uppercase tracking-[0.02em] text-ace leading-[0.9] mb-14">
                 Find Us.
                 <br />
-                <span className="text-pitch/15">Play Here.</span>
+                <span className="text-pitch">Play Here.</span>
               </h2>
 
               <div className="space-y-9">
@@ -481,10 +481,10 @@ export default function Home() {
                   { label: "Email", value: "play@trianglesportshub.ph" },
                 ].map(({ label, value }) => (
                   <div key={label}>
-                    <div className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch/35 mb-1.5">
+                    <div className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch mb-1.5">
                       {label}
                     </div>
-                    <div className="font-sans text-sm text-pitch/75 leading-[1.8] whitespace-pre-line">
+                    <div className="font-sans text-sm text-pitch leading-[1.8] whitespace-pre-line">
                       {value}
                     </div>
                   </div>
@@ -496,35 +496,35 @@ export default function Home() {
             <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch/35">
+                  <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch">
                     Name
                   </label>
                   <input
                     type="text"
                     placeholder="Your name"
-                    className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch/25 font-sans"
+                    className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch font-sans"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch/35">
+                  <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch">
                     Email
                   </label>
                   <input
                     type="email"
                     placeholder="your@email.com"
-                    className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch/25 font-sans"
+                    className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch font-sans"
                   />
                 </div>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch/35">
+                <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch">
                   Message
                 </label>
                 <textarea
                   rows={5}
                   placeholder="Ask about court availability, group bookings, or memberships…"
-                  className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch/25 resize-none font-sans"
+                  className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch resize-none font-sans"
                 />
               </div>
 

@@ -89,7 +89,7 @@ export default function BookingPage() {
           {SPORTS.map((sport, i) => (
             <div
               key={sport.id}
-              className="enter bg-pitch p-8 lg:p-10 flex flex-col gap-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#c5f135] relative z-10"
+              className="enter bg-pitch p-8 lg:p-10 flex flex-col gap-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#DFFF4F] relative z-10"
               style={{ animationDelay: `${0.4 + i * 0.12}s` }}
             >
               {/* Card top */}
