@@ -18,6 +18,9 @@ export interface UserDto {
   lastName: string;
   phoneNumber: string | null;
   role: string;
+  isBanned: boolean;
+  bannedAt: string | null;
+  creationTime: string;
 }
 
 export interface AuthResponse {
@@ -234,6 +237,7 @@ export interface ScheduleBookingDto {
 }
 
 export interface ScheduleOpenPlayDto {
+  id: string;
   windowId: string;
   roomId: string;
   status: RoomStatus;
@@ -247,6 +251,24 @@ export interface ScheduleDayDto {
   rooms: ScheduleRoomDto[];
   bookings: ScheduleBookingDto[];
   openPlayWindows: ScheduleOpenPlayDto[];
+}
+
+export interface AuditLogDto {
+  id: string;
+  level: "Information" | "Warning" | "Error";
+  userId: string | null;
+  userName: string | null;
+  email: string | null;
+  httpMethod: string;
+  requestUrl: string;
+  ipAddress: string | null;
+  userAgent: string | null;
+  statusCode: number;
+  durationMs: number;
+  creationTime: string;
+  errorMessage: string | null;
+  errorStackTrace: string | null;
+  requestBody: string | null;
 }
 
 export interface AdminBookingSummaryDto {

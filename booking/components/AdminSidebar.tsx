@@ -10,6 +10,8 @@ const NAV = [
   { href: "/admin/games", label: "Games", icon: "game" },
   { href: "/admin/rooms", label: "Rooms", icon: "room" },
   { href: "/admin/payments", label: "Payments", icon: "payment" },
+  { href: "/admin/users", label: "Users", icon: "users" },
+  { href: "/admin/audit-logs", label: "Audit Logs", icon: "audit" },
 ];
 
 function Icon({ name, className }: { name: string; className?: string }) {
@@ -58,6 +60,22 @@ function Icon({ name, className }: { name: string; className?: string }) {
           <rect x="2" y="5" width="20" height="14" rx="2" />
           <path d="M2 10h20" />
           <path d="M6 15h4" />
+        </svg>
+      );
+    case "audit":
+      return (
+        <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 8v4l3 3" />
+          <circle cx="12" cy="12" r="9" />
+        </svg>
+      );
+    case "users":
+      return (
+        <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
         </svg>
       );
     default:
