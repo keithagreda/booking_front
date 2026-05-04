@@ -95,6 +95,11 @@ export interface AvailabilityResponse {
 export interface PaymentDto {
   id: string;
   bookingId: string;
+  bookerName: string | null;
+  bookerEmail: string | null;
+  roomName: string | null;
+  bookingStartTime: string | null;
+  bookingEndTime: string | null;
   method: "GCash";
   status: PaymentStatus;
   amount: number;
@@ -204,7 +209,57 @@ export interface DisplaySnapshot {
   rooms: DisplayRoomState[];
 }
 
-// ─── Admin catalog ───
+// ─── Schedule calendar ───
+
+export interface ScheduleGameDto {
+  id: string;
+  name: string;
+}
+
+export interface ScheduleRoomDto {
+  id: string;
+  name: string;
+  game: GameDto;
+}
+
+export interface ScheduleBookingDto {
+  id: string;
+  roomId: string;
+  bookerName: string;
+  type: BookingType;
+  status: BookingStatus;
+  startTime: string;
+  endTime: string;
+  totalAmount: number;
+}
+
+export interface ScheduleOpenPlayDto {
+  windowId: string;
+  roomId: string;
+  status: RoomStatus;
+  windowNotes: string;
+  matchSize: number | null;
+  startTime: string;
+  endTime: string;
+}
+
+export interface ScheduleDayDto {
+  rooms: ScheduleRoomDto[];
+  bookings: ScheduleBookingDto[];
+  openPlayWindows: ScheduleOpenPlayDto[];
+}
+
+export interface AdminBookingSummaryDto {
+  id: string;
+  roomId: string;
+  bookerName: string;
+  roomName: string;
+  type: BookingType;
+  status: BookingStatus;
+  startTime: string;
+  endTime: string;
+  totalAmount: number;
+}
 
 export interface CreateGameRequest {
   name: string;

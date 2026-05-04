@@ -153,37 +153,32 @@ export default function AdminRoomsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-pitch pt-28 pb-28">
-      <div className="max-w-5xl mx-auto px-6 lg:px-10">
-        <Link
-          href="/admin"
-          className="font-mono text-[9px] tracking-[0.35em] uppercase text-chalk/30 hover:text-ace transition mb-4 block"
-        >
-          ← Admin
-        </Link>
+    <>
+      <div className="flex items-end justify-between mb-8 gap-4 flex-wrap">
+        <h1 className="font-display text-3xl tracking-[0.05em] text-white uppercase">
+          Rooms
+        </h1>
+        {editingId !== "new" && games.length > 0 && (
+          <button
+            onClick={startNew}
+            className="rounded-lg font-medium text-sm bg-emerald-600 text-white hover:bg-emerald-500 transition px-4 py-2.5"
+          >
+            + New Room
+          </button>
+        )}
+      </div>
 
-        <div className="flex items-end justify-between mb-10 gap-4 flex-wrap">
-          <h1 className="font-display text-[clamp(2.5rem,7vw,5rem)] uppercase tracking-[0.02em] text-chalk leading-none">
-            Rooms
-          </h1>
-          {editingId !== "new" && games.length > 0 && (
-            <button
-              onClick={startNew}
-              className="font-bold text-[11px] tracking-[0.15em] uppercase bg-ace text-pitch hover:bg-chalk transition px-5 py-3"
-            >
-              + New Room
-            </button>
-          )}
-        </div>
-
-        <div className="mb-6 flex items-center gap-3 flex-wrap">
-          <span className="font-mono text-[9px] tracking-[0.25em] uppercase text-chalk/40">
+      {games.length > 0 && (
+        <div className="mb-6 flex items-center gap-2 flex-wrap">
+          <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-zinc-500">
             Filter:
           </span>
           <button
             onClick={() => setFilter("")}
-            className={`font-mono text-[10px] tracking-[0.15em] uppercase px-3 py-1.5 transition ${
-              filter === "" ? "bg-ace text-pitch" : "border border-chalk/15 text-chalk/60"
+            className={`rounded-md font-mono text-[10px] tracking-[0.15em] uppercase px-3 py-1.5 transition ${
+              filter === ""
+                ? "bg-emerald-600 text-white"
+                : "border border-zinc-700 text-zinc-500 hover:text-zinc-300"
             }`}
           >
             All
@@ -192,161 +187,159 @@ export default function AdminRoomsPage() {
             <button
               key={g.id}
               onClick={() => setFilter(g.id)}
-              className={`font-mono text-[10px] tracking-[0.15em] uppercase px-3 py-1.5 transition ${
+              className={`rounded-md font-mono text-[10px] tracking-[0.15em] uppercase px-3 py-1.5 transition ${
                 filter === g.id
-                  ? "bg-ace text-pitch"
-                  : "border border-chalk/15 text-chalk/60 hover:border-chalk"
+                  ? "bg-emerald-600 text-white"
+                  : "border border-zinc-700 text-zinc-500 hover:text-zinc-300"
               }`}
             >
               {g.name}
             </button>
           ))}
         </div>
+      )}
 
-        {error && (
-          <div className="mb-6 border border-rose-300/30 p-4 text-rose-200 font-mono text-xs">
-            {error}
-          </div>
-        )}
+      {error && (
+        <div className="mb-6 rounded-lg border border-rose-500/20 bg-rose-500/5 p-4 text-rose-300 text-sm">
+          {error}
+        </div>
+      )}
 
-        {editingId === "new" && (
-          <RoomForm
-            form={form}
-            setForm={setForm}
-            games={games}
-            allowGameSelect
-            onSave={save}
-            onCancel={cancel}
-            busy={busy}
-            label="New Room"
-          />
-        )}
+      {editingId === "new" && (
+        <RoomForm
+          form={form}
+          setForm={setForm}
+          games={games}
+          allowGameSelect
+          onSave={save}
+          onCancel={cancel}
+          busy={busy}
+          label="New Room"
+        />
+      )}
 
-        {!rooms ? (
-          <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-chalk/30">
-            Loading…
-          </div>
-        ) : rooms.length === 0 && editingId !== "new" ? (
-          <div className="border border-chalk/10 p-7 font-sans text-sm text-chalk/50">
-            No rooms yet.
-          </div>
-        ) : (
-          <div className="space-y-px bg-chalk/8 mt-6">
-            {rooms.map((r) =>
-              editingId === r.id ? (
-                <RoomForm
-                  key={r.id}
-                  form={form}
-                  setForm={setForm}
-                  games={games}
-                  allowGameSelect={false}
-                  onSave={save}
-                  onCancel={cancel}
-                  busy={busy}
-                  label="Edit Room"
-                />
-              ) : (
-                <div key={r.id} className="bg-pitch p-6">
-                  <div className="flex items-center justify-between gap-6 flex-wrap">
-                    <div className="flex items-center gap-5 min-w-0">
-                      {r.imageUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={r.imageUrl}
-                          alt={r.name}
-                          className="w-20 h-20 object-cover border border-chalk/15 shrink-0"
-                        />
-                      ) : (
-                        <div className="w-20 h-20 grid place-items-center border border-dashed border-chalk/15 font-mono text-[8px] tracking-[0.25em] uppercase text-chalk/30 shrink-0">
-                          No Image
-                        </div>
-                      )}
-                      <div className="min-w-0">
-                        <div className="font-mono text-[9px] tracking-[0.25em] uppercase text-chalk/40 mb-1">
-                          {gameName(r.gameId)}
-                        </div>
-                        <div className="font-display text-2xl text-chalk truncate">
-                          {r.name}
-                        </div>
-                        <div className="font-mono text-[10px] tracking-[0.15em] text-chalk/50 mt-1">
-                          Capacity {r.capacity} · ₱{r.hourlyRate.toFixed(0)}/hr
-                        </div>
+      {!rooms ? (
+        <div className="text-sm text-zinc-500">Loading…</div>
+      ) : rooms.length === 0 && editingId !== "new" ? (
+        <div className="rounded-lg border border-zinc-800 p-6 text-sm text-zinc-500">
+          No rooms yet.
+        </div>
+      ) : (
+        <div className="space-y-3 mt-2">
+          {rooms.map((r) =>
+            editingId === r.id ? (
+              <RoomForm
+                key={r.id}
+                form={form}
+                setForm={setForm}
+                games={games}
+                allowGameSelect={false}
+                onSave={save}
+                onCancel={cancel}
+                busy={busy}
+                label="Edit Room"
+              />
+            ) : (
+              <div key={r.id} className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-5">
+                <div className="flex items-center justify-between gap-6 flex-wrap">
+                  <div className="flex items-center gap-5 min-w-0">
+                    {r.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={r.imageUrl}
+                        alt={r.name}
+                        className="w-16 h-16 rounded-lg object-cover border border-zinc-700 shrink-0"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 rounded-lg grid place-items-center border border-dashed border-zinc-700 font-mono text-[8px] tracking-[0.15em] uppercase text-zinc-600 shrink-0">
+                        No Image
                       </div>
-                    </div>
-                    <div className="flex gap-2 flex-wrap">
-                      <Link
-                        href={`/admin/rooms/${r.id}/schedule`}
-                        className="font-mono text-[10px] tracking-[0.15em] uppercase border border-ace/40 text-ace hover:bg-ace hover:text-pitch px-4 py-2 transition"
-                      >
-                        Schedule
-                      </Link>
-                      <button
-                        onClick={() =>
-                          setImageEditingId(imageEditingId === r.id ? null : r.id)
-                        }
-                        className={`font-mono text-[10px] tracking-[0.15em] uppercase border px-4 py-2 transition ${
-                          imageEditingId === r.id
-                            ? "bg-ace text-pitch border-ace"
-                            : "border-chalk/20 text-chalk/60 hover:border-chalk hover:text-chalk"
-                        }`}
-                      >
-                        Image
-                      </button>
-                      <button
-                        onClick={() => startEdit(r)}
-                        className="font-mono text-[10px] tracking-[0.15em] uppercase border border-chalk/20 text-chalk/60 hover:border-chalk hover:text-chalk px-4 py-2 transition"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => remove(r.id)}
-                        className="font-mono text-[10px] tracking-[0.15em] uppercase border border-rose-300/30 text-rose-200 hover:bg-rose-300/10 px-4 py-2 transition"
-                      >
-                        Delete
-                      </button>
+                    )}
+                    <div className="min-w-0">
+                      <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-zinc-500 mb-0.5">
+                        {gameName(r.gameId)}
+                      </div>
+                      <div className="font-medium text-lg text-zinc-100 truncate">
+                        {r.name}
+                      </div>
+                      <div className="font-mono text-[10px] tracking-[0.1em] text-zinc-500 mt-0.5">
+                        Capacity {r.capacity} · ₱{r.hourlyRate.toFixed(0)}/hr
+                      </div>
                     </div>
                   </div>
-                  {imageEditingId === r.id && (
-                    <div className="mt-5 pt-5 border-t border-chalk/10 flex flex-col gap-3">
-                      <div className="font-mono text-[9px] tracking-[0.35em] uppercase text-ace">
-                        Room Image
-                      </div>
-                      <div className="flex flex-wrap gap-3 items-center">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const f = e.target.files?.[0];
-                            if (f) uploadImage(r.id, f);
-                            e.currentTarget.value = "";
-                          }}
-                          disabled={imageBusyId === r.id}
-                          className="block text-chalk/70 font-mono text-xs file:mr-4 file:py-2 file:px-4 file:border-0 file:bg-ace file:text-pitch file:font-bold file:tracking-[0.15em] file:uppercase"
-                        />
-                        {r.imageUrl && (
-                          <button
-                            onClick={() => removeImage(r.id)}
-                            disabled={imageBusyId === r.id}
-                            className="font-mono text-[10px] tracking-[0.15em] uppercase border border-rose-300/30 text-rose-200 hover:bg-rose-300/10 px-4 py-2 transition disabled:opacity-50"
-                          >
-                            Remove Image
-                          </button>
-                        )}
-                        {imageBusyId === r.id && (
-                          <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-chalk/50">
-                            Working…
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  )}
+                  <div className="flex gap-2 flex-wrap">
+                    <Link
+                      href={`/admin/rooms/${r.id}/schedule`}
+                      className="rounded-md font-mono text-[10px] tracking-[0.15em] uppercase border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 px-3.5 py-2 transition"
+                    >
+                      Schedule
+                    </Link>
+                    <button
+                      onClick={() =>
+                        setImageEditingId(imageEditingId === r.id ? null : r.id)
+                      }
+                      className={`rounded-md font-mono text-[10px] tracking-[0.15em] uppercase border px-3.5 py-2 transition ${
+                        imageEditingId === r.id
+                          ? "bg-emerald-600 text-white border-emerald-600"
+                          : "border-zinc-700 text-zinc-500 hover:text-zinc-300"
+                      }`}
+                    >
+                      Image
+                    </button>
+                    <button
+                      onClick={() => startEdit(r)}
+                      className="rounded-md font-mono text-[10px] tracking-[0.15em] uppercase border border-zinc-700 text-zinc-500 hover:text-zinc-300 px-3.5 py-2 transition"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => remove(r.id)}
+                      className="rounded-md font-mono text-[10px] tracking-[0.15em] uppercase border border-rose-500/30 text-rose-400 hover:bg-rose-500/10 px-3.5 py-2 transition"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
-              )
-            )}
-          </div>
-        )}
-      </div>
-    </main>
+                {imageEditingId === r.id && (
+                  <div className="mt-5 pt-5 border-t border-zinc-800 flex flex-col gap-3">
+                    <div className="font-mono text-[10px] tracking-[0.2em] uppercase text-emerald-400">
+                      Room Image
+                    </div>
+                    <div className="flex flex-wrap gap-3 items-center">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          if (f) uploadImage(r.id, f);
+                          e.currentTarget.value = "";
+                        }}
+                        disabled={imageBusyId === r.id}
+                        className="block text-zinc-400 font-mono text-xs file:mr-4 file:py-2 file:px-4 file:border-0 file:bg-emerald-600 file:text-white file:font-medium file:tracking-[0.1em] file:uppercase file:rounded-md"
+                      />
+                      {r.imageUrl && (
+                        <button
+                          onClick={() => removeImage(r.id)}
+                          disabled={imageBusyId === r.id}
+                          className="rounded-md font-mono text-[10px] tracking-[0.15em] uppercase border border-rose-500/30 text-rose-400 hover:bg-rose-500/10 px-4 py-2 transition disabled:opacity-50"
+                        >
+                          Remove Image
+                        </button>
+                      )}
+                      {imageBusyId === r.id && (
+                        <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-zinc-500">
+                          Working…
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )
+          )}
+        </div>
+      )}
+    </>
   );
 }
 
@@ -370,8 +363,8 @@ function RoomForm({
   label: string;
 }) {
   return (
-    <div className="bg-court p-6 border border-ace/30 mb-6">
-      <div className="font-mono text-[9px] tracking-[0.35em] uppercase text-ace mb-5">
+    <div className="rounded-xl border border-emerald-500/20 bg-zinc-900 p-5 mb-6">
+      <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-emerald-400 mb-4">
         {label}
       </div>
       <div className="grid md:grid-cols-2 gap-4">
@@ -380,7 +373,7 @@ function RoomForm({
             <select
               value={form.gameId}
               onChange={(e) => setForm({ ...form, gameId: e.target.value })}
-              className="w-full bg-chalk/5 border border-chalk/10 px-4 py-3 text-chalk font-sans text-sm focus:outline-none focus:border-ace"
+              className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2.5 text-zinc-100 text-sm focus:outline-none focus:border-emerald-500"
             >
               <option value="">Select a game…</option>
               {games.map((g) => (
@@ -395,7 +388,7 @@ function RoomForm({
           <input
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full bg-chalk/5 border border-chalk/10 px-4 py-3 text-chalk font-sans text-sm focus:outline-none focus:border-ace"
+            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2.5 text-zinc-100 text-sm focus:outline-none focus:border-emerald-500"
           />
         </Field>
         <Field label="Capacity" required>
@@ -404,7 +397,7 @@ function RoomForm({
             min={1}
             value={form.capacity}
             onChange={(e) => setForm({ ...form, capacity: Number(e.target.value) })}
-            className="w-full bg-chalk/5 border border-chalk/10 px-4 py-3 text-chalk font-sans text-sm focus:outline-none focus:border-ace"
+            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2.5 text-zinc-100 text-sm focus:outline-none focus:border-emerald-500"
           />
         </Field>
         <Field label="Hourly Rate (₱)" required>
@@ -416,7 +409,7 @@ function RoomForm({
             onChange={(e) =>
               setForm({ ...form, hourlyRate: Number(e.target.value) })
             }
-            className="w-full bg-chalk/5 border border-chalk/10 px-4 py-3 text-chalk font-sans text-sm focus:outline-none focus:border-ace"
+            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2.5 text-zinc-100 text-sm focus:outline-none focus:border-emerald-500"
           />
         </Field>
         <Field label="Description" className="md:col-span-2">
@@ -424,22 +417,22 @@ function RoomForm({
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             rows={2}
-            className="w-full bg-chalk/5 border border-chalk/10 px-4 py-3 text-chalk font-sans text-sm focus:outline-none focus:border-ace"
+            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2.5 text-zinc-100 text-sm focus:outline-none focus:border-emerald-500"
           />
         </Field>
       </div>
-      <div className="flex gap-3 mt-5">
+      <div className="flex gap-3 mt-4">
         <button
           onClick={onSave}
           disabled={busy || !form.name || (allowGameSelect && !form.gameId)}
-          className="font-bold text-[11px] tracking-[0.15em] uppercase bg-ace text-pitch hover:bg-chalk transition px-6 py-3 disabled:opacity-50"
+          className="rounded-lg font-medium text-sm bg-emerald-600 text-white hover:bg-emerald-500 transition px-5 py-2.5 disabled:opacity-50"
         >
           {busy ? "Saving…" : "Save"}
         </button>
         <button
           onClick={onCancel}
           disabled={busy}
-          className="font-mono text-[10px] tracking-[0.25em] uppercase border border-chalk/20 text-chalk/60 hover:text-chalk hover:border-chalk px-5 py-3 transition"
+          className="rounded-md font-mono text-[10px] tracking-[0.2em] uppercase border border-zinc-700 text-zinc-500 hover:text-zinc-300 hover:border-zinc-500 px-4 py-2.5 transition"
         >
           Cancel
         </button>
@@ -461,9 +454,9 @@ function Field({
 }) {
   return (
     <label className={`block ${className ?? ""}`}>
-      <span className="font-mono text-[9px] tracking-[0.25em] uppercase text-chalk/50 block mb-2">
+      <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-zinc-500 block mb-1.5">
         {label}
-        {required && <span className="text-ace"> *</span>}
+        {required && <span className="text-emerald-400"> *</span>}
       </span>
       {children}
     </label>

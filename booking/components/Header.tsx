@@ -16,8 +16,11 @@ export default function Header() {
   const { user, isLoading, logout } = useAuth();
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const isAdmin = pathname?.startsWith("/admin");
   const [scrolled, setScrolled] = useState(!isHome);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  if (isAdmin) return null;
 
   useEffect(() => {
     if (!isHome) {
