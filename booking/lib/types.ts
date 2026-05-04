@@ -21,6 +21,19 @@ export interface UserDto {
   isBanned: boolean;
   bannedAt: string | null;
   creationTime: string;
+  trustScore: number;
+}
+
+export interface TrustHistoryDto {
+  id: string;
+  previousScore: number;
+  newScore: number;
+  adjustment: number;
+  reason: string;
+  details: string | null;
+  bookingRoom: string | null;
+  triggeredBy: string | null;
+  creationTime: string;
 }
 
 export interface AuthResponse {
@@ -324,4 +337,16 @@ export interface ScheduleWindowRequest {
   seatRate: number | null;
   matchSize: number | null;
   queueCap: number | null;
+}
+
+export interface UpcomingEventDto {
+  id: string;
+  roomName: string;
+  gameName: string;
+  status: RoomStatus;
+  startTime: string;
+  endTime: string;
+  notes: string | null;
+  matchSize: number | null;
+  seatRate: number | null;
 }
