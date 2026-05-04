@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #1F5D3B;
+  --background: #1f5d3b;
+  /* --background: #1F5D3B; */
   --foreground: #F7F9F7;
 }
 
@@ -13,10 +14,12 @@
   --font-display: var(--font-bebas);
 
   /* ── Brand palette ── */
-  --color-pitch: #1F5D3B;
+  /* --color-pitch: #1F5D3B; */
+  --color-pitch: #114428;
   --color-chalk: #F7F9F7;
   --color-chalk-dim: #E8EDE8;
-  --color-ace: #DFFF4F;
+  /* --color-ace: #DFFF4F; */
+  --color-ace: #CCFA00;
   --color-court: #174A2E;
   --color-muted: #6B8F7A;
   --color-secondary: #A7D7A9;
@@ -35,8 +38,13 @@ body {
 
 /* ── Marquee ─────────────────────────────────────── */
 @keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .marquee-inner {
@@ -51,6 +59,7 @@ body {
     opacity: 0;
     transform: translateY(48px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -73,4 +82,9 @@ body {
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+html {
+  scroll-padding-top: 6rem;
+  scroll-behavior: smooth;
 }

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 
 const NAV_LINKS = [
@@ -13,32 +14,38 @@ const NAV_LINKS = [
 
 export default function Header() {
   const { user, isLoading, logout } = useAuth();
-  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const [scrolled, setScrolled] = useState(!isHome);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
+    if (!isHome) {
+      setScrolled(true);
+      return;
+    }
     const onScroll = () => setScrolled(window.scrollY > 72);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isHome]);
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-pitch border-b border-chalk/10 py-3"
-          : "bg-pitch/0 py-5"
-      }`}
+      className={`sticky top-0 z-50 transition-all duration-500 ${scrolled
+        ? "bg-pitch border-b border-chalk/10 py-3"
+        : "bg-pitch py-5"
+        }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-10">
 
         {/* ── Logo ── */}
         <Link href="/" className="flex flex-col leading-none group">
           <span className="font-display text-2xl tracking-[0.15em] text-chalk uppercase transition-colors group-hover:text-ace">
-            Triangle SportHub
+            Centre Court
           </span>
           <span className="font-mono text-[8px] tracking-[0.35em] text-ace/80 uppercase">
-            Pickleball Courts
+            Book · Play · Repeat
           </span>
         </Link>
 
@@ -48,7 +55,7 @@ export default function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="font-mono text-[10px] tracking-[0.2em] uppercase text-chalk/50 transition-colors hover:text-chalk"
+              className="font-display text-sm lg:text-base uppercase tracking-[0.02em] text-chalk/85 leading-none transition-colors hover:text-chalk"
             >
               {item.label}
             </Link>
@@ -113,7 +120,7 @@ export default function Header() {
               key={item.href}
               href={item.href}
               onClick={() => setMenuOpen(false)}
-              className="font-mono text-xs tracking-[0.2em] uppercase text-chalk/60 hover:text-chalk transition-colors"
+              className="font-display text-sm uppercase tracking-[0.02em] text-chalk/85 leading-none hover:text-chalk transition-colors"
             >
               {item.label}
             </Link>

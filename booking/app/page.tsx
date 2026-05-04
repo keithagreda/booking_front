@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { apiClient } from "@/lib/api";
+import type { GameDto } from "@/lib/types";
 
 // ─── Scroll-reveal hook ───────────────────────────────────────────
 function useReveal(threshold = 0.1) {
@@ -84,6 +86,38 @@ export default function Home() {
   const howSection = useReveal();
   const contactSection = useReveal(0.08);
 
+  const [games, setGames] = useState<GameDto[] | null>(null);
+  useEffect(() => {
+    apiClient<GameDto[]>("/api/games")
+      .then(setGames)
+      .catch(() => setGames([]));
+  }, []);
+
+  // ─── Contact form state ───
+  const CONTACT_EMAIL = "play@centrecourt.ph";
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
+
+  function handleContactSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const subject =
+      contactName.trim().length > 0
+        ? `Centre Court inquiry from ${contactName.trim()}`
+        : "Centre Court inquiry";
+    const bodyLines = [
+      contactMessage.trim(),
+      "",
+      "—",
+      `From: ${contactName.trim() || "Anonymous"}`,
+      `Reply to: ${contactEmail.trim() || "(not provided)"}`,
+    ];
+    const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+    window.location.href = mailto;
+  }
+
   return (
     <>
       {/* ════════════════════════════════════════════════════
@@ -114,18 +148,18 @@ export default function Home() {
 
         {/* Top-right: court count badge */}
         <div className="absolute top-28 right-6 lg:right-10 text-right select-none">
-          <div className="font-mono text-[9px] tracking-[0.35em] uppercase text-chalk/25 mb-1">
+          <div className="font-mono text-[9px] md:text-[11px] md:font-medium md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.35em] uppercase text-chalk/25 mb-1">
             Available
           </div>
           <div className="font-display text-[4.5rem] leading-none text-ace">03</div>
-          <div className="font-mono text-[9px] tracking-[0.35em] uppercase text-chalk/25 mt-1">
+          <div className="font-mono text-[9px] md:text-[11px] md:font-medium md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.35em] uppercase text-chalk/25 mt-1">
             Sports
           </div>
         </div>
 
         {/* Section label */}
         <div className="absolute top-28 left-6 lg:left-10 select-none">
-          <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-chalk/25">
+          <span className="font-mono text-[9px] md:text-[11px] md:font-medium md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.3em] uppercase text-chalk/25">
             01&nbsp;/&nbsp;Home
           </span>
         </div>
@@ -135,10 +169,10 @@ export default function Home() {
 
           {/* Kicker */}
           <p
-            className="enter font-mono text-[10px] tracking-[0.45em] uppercase text-ace mb-8"
+            className="enter font-mono text-[10px] md:text-xs md:font-medium tracking-[0.45em] uppercase text-ace mb-8"
             style={{ animationDelay: "0.05s" }}
           >
-            Triangle SportHub&nbsp;&nbsp;—&nbsp;&nbsp;Bula, General Santos City
+            Centre Court&nbsp;&nbsp;—&nbsp;&nbsp;Bula, General Santos City
           </p>
 
           {/* Oversized headline */}
@@ -154,14 +188,14 @@ export default function Home() {
             className="enter mt-10 flex flex-col sm:flex-row sm:items-end gap-6 sm:gap-14"
             style={{ animationDelay: "0.6s" }}
           >
-            <p className="max-w-[22rem] text-chalk/45 text-sm leading-[1.75] font-sans">
+            <p className="max-w-[22rem] text-chalk/45 text-sm md:text-base md:font-medium leading-[1.75] font-sans">
               Premium pickleball courts. Real-time availability,
               instant online booking — no calls, no walk-ins required.
             </p>
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/booking"
-                className="group inline-flex items-center gap-3 bg-ace text-pitch font-bold text-[11px] tracking-[0.18em] uppercase px-7 py-4 transition-all duration-300 hover:bg-chalk"
+                className="group inline-flex items-center gap-3 bg-ace text-pitch font-bold text-[11px] md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.18em] uppercase px-7 py-4 transition-all duration-300 hover:bg-chalk"
               >
                 Reserve a Court
                 <span className="transition-transform duration-300 group-hover:translate-x-1.5">
@@ -170,7 +204,7 @@ export default function Home() {
               </Link>
               <a
                 href="#how-it-works"
-                className="font-mono text-[10px] tracking-[0.18em] uppercase text-chalk/40 transition-colors hover:text-chalk"
+                className="font-mono text-[10px] md:text-xs md:font-medium tracking-[0.18em] uppercase text-chalk/40 transition-colors hover:text-chalk"
               >
                 How it works&nbsp;↓
               </a>
@@ -181,12 +215,12 @@ export default function Home() {
         {/* Bottom info bar */}
         <div className="absolute bottom-0 left-0 right-0 border-t border-chalk/8">
           <div className="max-w-7xl mx-auto px-6 lg:px-10 py-4 flex flex-wrap justify-between gap-y-1">
-            <span className="font-mono text-[9px] tracking-[0.28em] uppercase text-chalk/25">
+            <span className="font-mono text-[9px] md:text-[11px] md:font-medium md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.28em] uppercase text-chalk/25">
               Mon – Sun&nbsp;&nbsp;·&nbsp;&nbsp;7:00 AM – 10:00 PM
             </span>
-            <span className="font-mono text-[9px] tracking-[0.28em] uppercase text-chalk/25">
+            {/* <span className="font-mono text-[9px] md:text-[11px] md:font-medium md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.28em] uppercase text-chalk/25">
               &nbsp;₱240&nbsp;/&nbsp;hr
-            </span>
+            </span> */}
           </div>
         </div>
       </section>
@@ -207,113 +241,12 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ════════════════════════════════════════════════════
-          02 — COURTS
-      ════════════════════════════════════════════════════ */}
-      <section className="bg-chalk py-24 lg:py-36">
-        <div
-          ref={courtsSection.ref}
-          className={`max-w-7xl mx-auto px-6 lg:px-10 reveal ${courtsSection.visible ? "visible" : ""}`}
-        >
-          {/* Section header */}
-          <div className="flex items-end justify-between mb-16 lg:mb-20">
-            <div>
-              <span className="font-mono text-[9px] tracking-[0.35em] uppercase text-pitch/35 block mb-4">
-                02&nbsp;/&nbsp;What We Offer
-              </span>
-              <h2 className="font-display text-[clamp(2.5rem,7vw,6.5rem)] uppercase tracking-[0.02em] text-pitch leading-[0.9]">
-                Pick Your Game
-                <br />
-              </h2>
-            </div>
-            <Link
-              href="/booking"
-              className="hidden md:inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.18em] uppercase text-pitch/40 hover:text-pitch transition-colors"
-            >
-              View all&nbsp;→
-            </Link>
-          </div>
 
-          {/* Sport cards */}
-          <div className="grid md:grid-cols-3 gap-px bg-pitch/10">
-            {SPORTS.map((sport, i) => (
-              <div
-                key={sport.id}
-                className={`
-                  bg-chalk p-8 lg:p-10 flex flex-col gap-7
-                  transition-all duration-300
-                  hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#1F5D3B] hover:z-10 relative cursor-pointer
-                  reveal ${courtsSection.visible ? "visible" : ""}
-                `}
-                style={{ transitionDelay: `${i * 0.12 + 0.1}s` }}
-              >
-                {/* Card top */}
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <span className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch/35 block mb-2">
-                      {sport.tag}
-                    </span>
-                    <h3 className="font-display text-[1.75rem] uppercase tracking-wide text-pitch leading-none">
-                      {sport.name}
-                    </h3>
-                  </div>
-                  <span className="shrink-0 font-mono text-[8px] tracking-[0.25em] uppercase px-2.5 py-1 bg-ace text-pitch">
-                    {sport.status}
-                  </span>
-                </div>
-
-                {/* Description */}
-                <p className="font-sans text-[11px] text-pitch/50 leading-[1.8]">
-                  {sport.description}
-                </p>
-
-                {/* Card bottom */}
-                <div className="mt-auto pt-6 border-t border-pitch/10 flex items-end justify-between">
-                  <div>
-                    <div className="flex items-baseline gap-1.5">
-                      <span className="font-display text-[2.25rem] text-pitch leading-none">
-                        ₱{sport.price}
-                      </span>
-                      <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-pitch/35">
-                        / hr
-                      </span>
-                    </div>
-                    {sport.peakPrice && (
-                      <div className="font-mono text-[8px] tracking-[0.2em] uppercase text-pitch/40 mt-1">
-                        ₱{sport.peakPrice} peak hrs
-                      </div>
-                    )}
-                  </div>
-                  <Link
-                    href="/booking"
-                    className="group inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.15em] uppercase text-pitch font-bold transition-all hover:gap-3"
-                  >
-                    Book&nbsp;
-                    <span className="transition-transform duration-300 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Mobile view-all */}
-          <div className="mt-8 md:hidden">
-            <Link
-              href="/booking"
-              className="inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.18em] uppercase text-pitch/50 hover:text-pitch transition-colors"
-            >
-              View all courts&nbsp;→
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* ════════════════════════════════════════════════════
-          03 — THE VENUE
+          02 — THE VENUE
       ════════════════════════════════════════════════════ */}
-      <section id="venue" className="bg-pitch py-24 lg:py-36">
+      <section id="venue" className="bg-chalk py-24 lg:py-36">
         <div
           ref={venueSection.ref}
           className={`max-w-7xl mx-auto px-6 lg:px-10 reveal ${venueSection.visible ? "visible" : ""}`}
@@ -321,16 +254,16 @@ export default function Home() {
           {/* Section header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 lg:mb-18">
             <div>
-              <span className="font-mono text-[9px] tracking-[0.35em] uppercase text-chalk/25 block mb-4">
-                03&nbsp;/&nbsp;The Venue
+              <span className="font-mono text-[9px] md:text-[11px] md:font-medium md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.35em] uppercase text-pitch/35 block mb-4">
+                02&nbsp;/&nbsp;The Venue
               </span>
-              <h2 className="font-display text-[clamp(2.5rem,7vw,6.5rem)] uppercase tracking-[0.02em] text-chalk leading-[0.9]">
+              <h2 className="font-display text-[clamp(2.5rem,7vw,6.5rem)] uppercase tracking-[0.02em] text-pitch leading-[0.9]">
                 Step
                 <br />
-                <span className="text-ace">Inside.</span>
+                <span className="text-pitch/70">Inside.</span>
               </h2>
             </div>
-            <p className="max-w-xs font-sans text-sm text-chalk/40 leading-[1.8] md:text-right">
+            <p className="max-w-xs font-sans text-sm md:text-base md:font-medium text-pitch/75 leading-[1.8] md:text-right">
               Three dedicated spaces under one roof in Bula, General Santos City.
               Whether you're here to compete or unwind — there's a game for you.
             </p>
@@ -340,56 +273,86 @@ export default function Home() {
           <div className="grid grid-cols-2 grid-rows-2 md:grid-cols-3 gap-3 h-[400px] md:h-[520px]">
 
             {/* Pickleball — large */}
-            <div className="col-span-2 row-span-2 md:col-span-2 bg-court border border-chalk/8 p-8 lg:p-10 flex flex-col justify-between transition-colors duration-300 hover:border-ace/25">
-              <span className="font-mono text-[8px] tracking-[0.35em] uppercase text-chalk/25">
+            <div className="relative overflow-hidden group col-span-2 row-span-2 md:col-span-2 bg-court border border-pitch/10  shadow-black/40 p-8 lg:p-10 flex flex-col justify-between transition-all duration-300 hover:border-ace/25 hover:shadow-black/60">
+              {/* Background Image */}
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                style={{
+                  backgroundImage: "url('https://images.unsplash.com/photo-1737476997205-b3336182f215?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"
+                }}
+              />
+              {/* Gradient Overlay for text legibility */}
+              <div className="absolute inset-0 bg-gradient-to-t from-pitch via-pitch/45 to-transparent opacity-90" />
+
+              <span className="relative z-10 font-mono text-[8px] md:text-[10px] md:font-medium md:text-xs md:font-medium tracking-[0.35em] uppercase text-chalk/80 md:text-chalk">
                 Court Sport
               </span>
-              <div>
-                <div className="font-display text-[clamp(2.25rem,5.5vw,4.5rem)] uppercase tracking-wide text-chalk leading-[0.9] mb-3">
+              <div className="relative z-10">
+                <div className="font-display text-[clamp(2.25rem,5.5vw,4.5rem)] uppercase tracking-wide text-chalk leading-[0.9] mb-3 drop-shadow-md">
                   Pickleball
                   <br />
                   Courts
                 </div>
-                <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-ace">
+                <div className="font-mono text-[9px] md:text-[11px] md:font-medium md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.3em] uppercase text-ace drop-shadow-md">
                   — Court lights included
                 </div>
               </div>
             </div>
 
             {/* Billiards */}
-            <div className="col-span-1 row-span-1 bg-court border border-chalk/8 p-6 flex flex-col justify-between transition-colors duration-300 hover:border-ace/25">
-              <span className="font-mono text-[8px] tracking-[0.35em] uppercase text-chalk/25">
+            <div className="relative overflow-hidden group col-span-1 row-span-1 bg-court border border-pitch/10  shadow-black/40 p-6 flex flex-col justify-between transition-all duration-300 hover:border-ace/25 hover:shadow-black/60">
+              {/* Background Image */}
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                style={{
+                  backgroundImage: "url('https://images.unsplash.com/photo-1656381836187-79f6d0ae2e57?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"
+                }}
+              />
+              {/* Gradient Overlay for text legibility */}
+              <div className="absolute inset-0 bg-gradient-to-t from-pitch via-pitch/50 to-transparent opacity-90" />
+
+              <span className="relative z-10 font-mono text-[8px] md:text-[10px] md:font-medium md:text-xs md:font-medium tracking-[0.35em] uppercase text-chalk/80 md:text-chalk">
                 Table Sport
               </span>
-              <div className="font-display text-[1.6rem] uppercase tracking-wide text-chalk leading-none">
+              <div className="relative z-10 font-display text-[1.6rem] uppercase tracking-wide text-chalk leading-none drop-shadow-md">
                 Billiards
               </div>
             </div>
 
             {/* Darts */}
-            <div className="col-span-1 row-span-1 bg-court border border-chalk/8 p-6 flex flex-col justify-between transition-colors duration-300 hover:border-ace/25">
-              <span className="font-mono text-[8px] tracking-[0.35em] uppercase text-chalk/25">
+            <div className="relative overflow-hidden group col-span-1 row-span-1 bg-court border border-pitch/10  shadow-black/40 p-6 flex flex-col justify-between transition-all duration-300 hover:border-ace/25 hover:shadow-black/60">
+              {/* Background Image */}
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                style={{
+                  backgroundImage: "url('https://i.pinimg.com/736x/51/0e/d5/510ed5234ae0b36d80412684f9facc59.jpg')"
+                }}
+              />
+              {/* Gradient Overlay for text legibility */}
+              <div className="absolute inset-0 bg-gradient-to-t from-pitch via-pitch/50 to-transparent opacity-90" />
+
+              <span className="relative z-10 font-mono text-[8px] md:text-[10px] md:font-medium md:text-xs md:font-medium tracking-[0.35em] uppercase text-chalk/80 md:text-chalk">
                 Target Sport
               </span>
-              <div className="font-display text-[1.6rem] uppercase tracking-wide text-chalk leading-none">
+              <div className="relative z-10 font-display text-[1.6rem] uppercase tracking-wide text-chalk leading-none drop-shadow-md">
                 Darts
               </div>
             </div>
           </div>
 
           {/* Quick facts strip */}
-          <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-px bg-chalk/8">
+          <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-px bg-pitch/10">
             {[
               { value: "7AM – 10PM", label: "Open daily" },
               { value: "Lit Courts", label: "Night games welcome" },
               { value: "Walk-ins OK", label: "No booking required off-peak" },
               { value: "Bula, GenSan", label: "General Santos City" },
             ].map(({ value, label }) => (
-              <div key={label} className="bg-pitch px-6 py-7">
-                <div className="font-display text-xl uppercase tracking-wide text-chalk mb-1.5">
+              <div key={label} className="bg-chalk px-6 py-7">
+                <div className="font-display text-xl uppercase tracking-wide text-pitch mb-1.5">
                   {value}
                 </div>
-                <div className="font-mono text-[8px] tracking-[0.25em] uppercase text-chalk/30">
+                <div className="font-popins text-[8px] md:text-[10px] md:font-medium md:text-xs md:font-medium tracking-[0.25em] uppercase text-pitch/80">
                   {label}
                 </div>
               </div>
@@ -401,14 +364,13 @@ export default function Home() {
       {/* ════════════════════════════════════════════════════
           04 — HOW IT WORKS
       ════════════════════════════════════════════════════ */}
-      <section id="how-it-works" className="bg-pitch py-24 lg:py-36">
+      {/* <section id="how-it-works" className="bg-pitch py-24 lg:py-36">
         <div
           ref={howSection.ref}
           className={`max-w-7xl mx-auto px-6 lg:px-10 reveal ${howSection.visible ? "visible" : ""}`}
         >
-          {/* Section header */}
           <div className="mb-16 lg:mb-24">
-            <span className="font-mono text-[9px] tracking-[0.35em] uppercase text-chalk/25 block mb-4">
+            <span className="font-mono text-[9px] md:text-[11px] md:font-medium md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.35em] uppercase text-chalk/25 block mb-4">
               04&nbsp;/&nbsp;Process
             </span>
             <h2 className="font-display text-[clamp(2.5rem,7vw,6.5rem)] uppercase tracking-[0.02em] text-chalk leading-[0.9]">
@@ -418,7 +380,6 @@ export default function Home() {
             </h2>
           </div>
 
-          {/* Steps */}
           <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-chalk/8">
             {STEPS.map((step, i) => (
               <div
@@ -435,14 +396,13 @@ export default function Home() {
                 <h3 className="font-display text-3xl uppercase tracking-wider text-chalk mb-4">
                   {step.title}
                 </h3>
-                <p className="font-sans text-sm text-chalk/45 leading-[1.8]">
+                <p className="font-sans text-sm md:text-base md:font-medium text-chalk/45 leading-[1.8]">
                   {step.body}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Bottom CTA */}
           <div className="mt-16 pt-12 border-t border-chalk/8">
             <Link
               href="/booking"
@@ -452,6 +412,105 @@ export default function Home() {
               <span className="text-ace transition-transform duration-300 group-hover:translate-x-2">
                 →
               </span>
+            </Link>
+          </div>
+        </div>
+      </section> */}
+
+      {/* ════════════════════════════════════════════════════
+          03 — COURTS
+      ════════════════════════════════════════════════════ */}
+      <section className="bg-chalk py-24 lg:py-36">
+        <div
+          ref={courtsSection.ref}
+          className={`max-w-7xl mx-auto px-6 lg:px-10 reveal ${courtsSection.visible ? "visible" : ""}`}
+        >
+          {/* Section header */}
+          <div className="flex items-end justify-between mb-16 lg:mb-20">
+            <div>
+              <span className="font-mono text-[9px] md:text-[11px] md:font-medium md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.35em] uppercase text-pitch/35 block mb-4">
+                03&nbsp;/&nbsp;What We Offer
+              </span>
+              <h2 className="font-display text-[clamp(2.5rem,7vw,6.5rem)] uppercase tracking-[0.02em] text-pitch leading-[0.9]">
+                Pick Your Game
+                <br />
+              </h2>
+            </div>
+            <Link
+              href="/booking"
+              className="hidden md:inline-flex items-center gap-2 font-mono text-[10px] md:text-xs md:font-medium tracking-[0.18em] uppercase text-pitch/40 hover:text-pitch transition-colors"
+            >
+              View all&nbsp;→
+            </Link>
+          </div>
+
+          {/* Sport cards */}
+          {games === null ? (
+            <div className="font-mono text-[10px] md:text-xs tracking-[0.25em] uppercase text-pitch/30">
+              Loading games…
+            </div>
+          ) : games.length === 0 ? (
+            <div className="border border-pitch/15 p-8 font-sans text-sm text-pitch/50">
+              No games configured yet.
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-px bg-pitch/10">
+              {games.map((game, i) => (
+                <Link
+                  key={game.id}
+                  href={`/booking/${game.id}`}
+                  className={`
+                    bg-chalk p-8 lg:p-10 flex flex-col gap-7
+                    transition-all duration-300
+                    hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#1F5D3B] hover:z-10 relative cursor-pointer
+                    reveal ${courtsSection.visible ? "visible" : ""}
+                  `}
+                  style={{ transitionDelay: `${i * 0.12 + 0.1}s` }}
+                >
+                  {/* Card top */}
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <span className="font-mono text-[8px] md:text-[10px] md:font-medium md:text-xs md:font-medium tracking-[0.35em] uppercase text-pitch/35 block mb-2">
+                        Sport
+                      </span>
+                      <h3 className="font-display text-[1.75rem] uppercase tracking-wide text-pitch leading-none">
+                        {game.name}
+                      </h3>
+                    </div>
+                    <span className="shrink-0 font-mono text-[8px] md:text-[10px] md:font-medium md:text-xs md:font-medium tracking-[0.25em] uppercase px-2.5 py-1 bg-ace text-pitch">
+                      Available
+                    </span>
+                  </div>
+
+                  {/* Description */}
+                  {game.description && (
+                    <p className="font-sans text-[11px] md:text-sm md:font-medium md:text-base md:font-medium text-pitch/50 leading-[1.8]">
+                      {game.description}
+                    </p>
+                  )}
+
+                  {/* Card bottom */}
+                  <div className="mt-auto pt-6 border-t-0 md:border-t border-pitch/10 flex items-end justify-between">
+                    <span />
+                    <span className="group inline-flex items-center gap-2 font-mono text-[10px] md:text-xs md:font-medium tracking-[0.15em] uppercase text-pitch font-bold transition-all hover:gap-3">
+                      Book&nbsp;
+                      <span className="transition-transform duration-300 group-hover:translate-x-1">
+                        →
+                      </span>
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Mobile view-all */}
+          <div className="mt-8 md:hidden">
+            <Link
+              href="/booking"
+              className="inline-flex items-center gap-2 font-mono text-[10px] md:text-xs md:font-medium tracking-[0.18em] uppercase text-pitch/50 hover:text-pitch transition-colors"
+            >
+              View all courts&nbsp;→
             </Link>
           </div>
         </div>
@@ -469,13 +528,13 @@ export default function Home() {
 
             {/* Left: info */}
             <div>
-              <span className="font-mono text-[9px] tracking-[0.35em] uppercase text-pitch/35 block mb-4">
-                05&nbsp;/&nbsp;Contact
+              <span className="font-mono text-[9px] md:text-[11px] md:font-medium md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.35em] uppercase text-pitch/35 block mb-4">
+                04&nbsp;/&nbsp;Contact
               </span>
               <h2 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] uppercase tracking-[0.02em] text-pitch leading-[0.9] mb-14">
                 Find Us.
                 <br />
-                <span className=" text-emerald">Play Here.</span>
+                <span className=" text-pitch/70">Play Here.</span>
               </h2>
 
               <div className="space-y-9">
@@ -489,13 +548,13 @@ export default function Home() {
                     value: "Monday – Sunday\n7:00 AM – 10:00 PM",
                   },
                   { label: "Phone", value: "+63 912 345 6789" },
-                  { label: "Email", value: "play@trianglesportshub.ph" },
+                  { label: "Email", value: "play@centrecourt.ph" },
                 ].map(({ label, value }) => (
                   <div key={label}>
-                    <div className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch mb-1.5">
+                    <div className="font-mono text-[8px] md:text-[10px] md:font-medium md:text-xs md:font-medium tracking-[0.35em] uppercase text-pitch mb-1.5">
                       {label}
                     </div>
-                    <div className="font-sans text-sm text-pitch leading-[1.8] whitespace-pre-line">
+                    <div className="font-sans text-sm md:text-base md:font-medium text-pitch leading-[1.8] whitespace-pre-line">
                       {value}
                     </div>
                   </div>
@@ -503,54 +562,74 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right: form */}
-            <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div className="flex flex-col gap-2">
-                  <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Your name"
-                    className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch font-sans"
-                  />
+            {/* Right: form & map */}
+            <div className="flex flex-col gap-8">
+              <form className="flex flex-col gap-4" onSubmit={handleContactSubmit}>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <label className="font-mono text-[8px] md:text-[10px] md:font-medium md:text-xs md:font-medium tracking-[0.35em] uppercase text-pitch">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      value={contactName}
+                      onChange={(e) => setContactName(e.target.value)}
+                      placeholder="Your name"
+                      className="border border-pitch/18 bg-transparent text-pitch text-sm md:text-base md:font-medium px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch font-sans"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="font-mono text-[8px] md:text-[10px] md:font-medium md:text-xs md:font-medium tracking-[0.35em] uppercase text-pitch">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      value={contactEmail}
+                      onChange={(e) => setContactEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      className="border border-pitch/18 bg-transparent text-pitch text-sm md:text-base md:font-medium px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch font-sans"
+                    />
+                  </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="your@email.com"
-                    className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch font-sans"
-                  />
-                </div>
-              </div>
 
-              <div className="flex flex-col gap-2">
-                <label className="font-mono text-[8px] tracking-[0.35em] uppercase text-pitch">
-                  Message
-                </label>
-                <textarea
-                  rows={5}
-                  placeholder="Ask about court availability, group bookings, or memberships…"
-                  className="border border-pitch/18 bg-transparent text-pitch text-sm px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch resize-none font-sans"
+                <div className="flex flex-col gap-2">
+                  <label className="font-mono text-[8px] md:text-[10px] md:font-medium md:text-xs md:font-medium tracking-[0.35em] uppercase text-pitch">
+                    Message
+                  </label>
+                  <textarea
+                    rows={5}
+                    value={contactMessage}
+                    onChange={(e) => setContactMessage(e.target.value)}
+                    required
+                    placeholder="Ask about court availability, group bookings, or memberships…"
+                    className="border border-pitch/18 bg-transparent text-pitch text-sm md:text-base md:font-medium px-4 py-3.5 outline-none transition-colors focus:border-pitch placeholder:text-pitch resize-none font-sans"
+                  />
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    className="group inline-flex items-center gap-3 text-pitch/70 text-chalk font-bold text-[11px] md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.18em] uppercase px-7 py-4 transition-all duration-300 hover:bg-ace hover:text-pitch"
+                  >
+                    Send Message
+                    <span className="transition-transform duration-300 group-hover:translate-x-1.5">
+                      →
+                    </span>
+                  </button>
+                </div>
+              </form>
+
+              {/* Map Embed */}
+              <div className="w-full h-[250px] sm:h-[300px] border border-pitch/18 overflow-hidden shadow-xl shadow-pitch/5 mt-2">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d597.2591735550272!2d125.19248979590314!3d6.10396320667379!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1777692554375!5m2!1sen!2sph"
+                  className="w-full h-full border-0 transition-all duration-700"
+                  allowFullScreen={false}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
                 />
               </div>
-
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  className="group inline-flex items-center gap-3 bg-emerald text-chalk font-bold text-[11px] tracking-[0.18em] uppercase px-7 py-4 transition-all duration-300 hover:bg-ace hover:text-pitch"
-                >
-                  Send Message
-                  <span className="transition-transform duration-300 group-hover:translate-x-1.5">
-                    →
-                  </span>
-                </button>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
       </section>
@@ -564,10 +643,10 @@ export default function Home() {
           {/* Brand */}
           <div>
             <div className="font-display text-xl tracking-[0.2em] uppercase text-chalk">
-              Triangle SportHub
+              Centre Court
             </div>
-            <div className="font-mono text-[8px] tracking-[0.35em] uppercase text-chalk/25 mt-1">
-              Pickleball Courts
+            <div className="font-mono text-[8px] md:text-[10px] md:font-medium md:text-xs md:font-medium tracking-[0.35em] uppercase text-chalk/25 mt-1">
+              Book · Play · Repeat
             </div>
           </div>
 
@@ -583,7 +662,7 @@ export default function Home() {
               <Link
                 key={item.label + item.href}
                 href={item.href}
-                className="font-mono text-[9px] tracking-[0.22em] uppercase text-chalk/25 hover:text-chalk transition-colors"
+                className="font-mono text-[9px] md:text-[11px] md:font-medium md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.22em] uppercase text-chalk/25 hover:text-chalk transition-colors"
               >
                 {item.label}
               </Link>
@@ -591,8 +670,8 @@ export default function Home() {
           </nav>
 
           {/* Copyright */}
-          <div className="font-mono text-[9px] tracking-[0.18em] uppercase text-chalk/18 shrink-0">
-            © {new Date().getFullYear()} Triangle SportHub
+          <div className="font-mono text-[9px] md:text-[11px] md:font-medium md:text-sm md:font-medium md:text-base md:font-medium tracking-[0.18em] uppercase text-chalk/18 shrink-0">
+            © {new Date().getFullYear()} Centre Court
           </div>
         </div>
       </footer>

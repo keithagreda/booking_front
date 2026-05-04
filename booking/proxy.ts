@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = ["/bookings", "/profile", "/admin"];
+const protectedRoutes = ["/bookings", "/profile", "/admin", "/checkout"];
 const authRoutes = ["/login", "/register"];
 
 export default async function proxy(req: NextRequest) {

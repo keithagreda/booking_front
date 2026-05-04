@@ -21,9 +21,9 @@ const bebasNeue = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
-  title: "Triangle SportHub | Pickleball, Billiards & Darts in General Santos City",
+  title: "Centre Court | Book courts and drop-in sessions",
   description:
-    "Book pickleball courts, billiards tables, and darts lanes online at Triangle SportHub in Bula, General Santos City. Real-time availability, instant booking.",
+    "Book courts and join drop-in open-play sessions at Centre Court. Real-time availability, instant booking, and live match queues.",
 };
 
 export default function RootLayout({

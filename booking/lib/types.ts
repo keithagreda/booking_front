@@ -24,3 +24,227 @@ export interface AuthResponse {
   token: string;
   user: UserDto;
 }
+
+// ─── Booking domain ───
+
+export type RoomStatus =
+  | "Open"
+  | "OpenPlay"
+  | "Tournament"
+  | "Closed"
+  | "Maintenance";
+
+export type BookingType = "Regular" | "OpenPlaySeat";
+
+export type BookingStatus =
+  | "PendingPayment"
+  | "ProofSubmitted"
+  | "Approved"
+  | "Rejected"
+  | "Expired"
+  | "Cancelled";
+
+export type PaymentStatus =
+  | "AwaitingProof"
+  | "Submitted"
+  | "Approved"
+  | "Rejected";
+
+export type QueueState = "Queued" | "InMatch" | "Left";
+
+export interface GameDto {
+  id: string;
+  name: string;
+  description: string | null;
+  iconUrl: string | null;
+}
+
+export interface RoomDto {
+  id: string;
+  gameId: string;
+  name: string;
+  description: string | null;
+  capacity: number;
+  hourlyRate: number;
+  imageUrl: string | null;
+}
+
+export interface RoomSlotDto {
+  start: string;
+  end: string;
+  status: RoomStatus;
+  available: boolean;
+  windowId: string | null;
+  seatRate: number | null;
+  matchSize: number | null;
+  queueLength: number | null;
+}
+
+export interface RoomAvailabilityDto {
+  room: RoomDto;
+  slots: RoomSlotDto[];
+}
+
+export interface AvailabilityResponse {
+  game: GameDto;
+  from: string;
+  to: string;
+  rooms: RoomAvailabilityDto[];
+}
+
+export interface PaymentDto {
+  id: string;
+  bookingId: string;
+  method: "GCash";
+  status: PaymentStatus;
+  amount: number;
+  gcashReference: string | null;
+  proofS3Key: string | null;
+  proofPresignedUrl: string | null;
+  rejectionReason: string | null;
+  reviewedAt: string | null;
+}
+
+export interface BookingDto {
+  id: string;
+  roomId: string;
+  roomName: string;
+  bookedByUserId: string;
+  type: BookingType;
+  status: BookingStatus;
+  startTime: string;
+  endTime: string;
+  totalAmount: number;
+  holdExpiresAt: string | null;
+  notes: string | null;
+  payment: PaymentDto | null;
+}
+
+export interface CreateRegularBookingRequest {
+  roomId: string;
+  startTime: string;
+  hours: number;
+  notes?: string | null;
+}
+
+// ─── Open play ───
+
+export interface OpenPlayWindowSummary {
+  windowId: string;
+  roomId: string;
+  roomName: string;
+  gameId: string;
+  gameName: string;
+  startTime: string;
+  endTime: string;
+  seatRate: number;
+  matchSize: number;
+  queueCap: number | null;
+  queueLength: number;
+  activeMatchCount: number;
+}
+
+export interface QueuePartyDto {
+  partyId: string;
+  size: number;
+  leaderUserId: string;
+  leaderName: string;
+  partnerUserId: string | null;
+  partnerName: string | null;
+  enqueuedAt: string;
+  state: QueueState;
+}
+
+export interface MatchPlayerDto {
+  userId: string;
+  name: string;
+  partyId: string | null;
+}
+
+export interface MatchDto {
+  id: string;
+  windowId: string;
+  roomId: string;
+  startedAt: string;
+  endedAt: string | null;
+  players: MatchPlayerDto[];
+}
+
+export interface OpenPlayWindowState {
+  summary: OpenPlayWindowSummary;
+  queue: QueuePartyDto[];
+  activeMatches: MatchDto[];
+}
+
+export interface JoinOpenPlayResponse {
+  partyId: string;
+  bookings: BookingDto[];
+}
+
+// ─── Display ───
+
+export interface DisplayRoomState {
+  roomId: string;
+  roomName: string;
+  gameId: string;
+  gameName: string;
+  currentStatus: RoomStatus;
+  currentReservationLabel: string | null;
+  currentEndsAt: string | null;
+  nextStartsAt: string | null;
+  nextLabel: string | null;
+  openPlayQueueLength: number | null;
+  openPlayActiveMatches: number | null;
+  currentMatchId: string | null;
+  currentMatchPlayers: MatchPlayerDto[] | null;
+}
+
+export interface DisplaySnapshot {
+  asOf: string;
+  rooms: DisplayRoomState[];
+}
+
+// ─── Admin catalog ───
+
+export interface CreateGameRequest {
+  name: string;
+  description: string | null;
+  iconUrl: string | null;
+}
+
+export interface CreateRoomRequest {
+  gameId: string;
+  name: string;
+  description: string | null;
+  capacity: number;
+  hourlyRate: number;
+}
+
+export interface UpdateRoomRequest {
+  name: string;
+  description: string | null;
+  capacity: number;
+  hourlyRate: number;
+}
+
+export interface ScheduleWindowDto {
+  id: string;
+  roomId: string;
+  status: RoomStatus;
+  startTime: string;
+  endTime: string;
+  notes: string | null;
+  seatRate: number | null;
+  matchSize: number | null;
+  queueCap: number | null;
+}
+
+export interface ScheduleWindowRequest {
+  status: RoomStatus;
+  startTime: string;
+  endTime: string;
+  notes: string | null;
+  seatRate: number | null;
+  matchSize: number | null;
+  queueCap: number | null;
+}
