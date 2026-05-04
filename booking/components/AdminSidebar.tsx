@@ -7,6 +7,7 @@ import Link from "next/link";
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: "grid" },
   { href: "/admin/schedule", label: "Schedule", icon: "calendar" },
+  { href: "/admin/bookings", label: "Bookings", icon: "bookings" },
   { href: "/admin/games", label: "Games", icon: "game" },
   { href: "/admin/rooms", label: "Rooms", icon: "room" },
   { href: "/admin/payments", label: "Payments", icon: "payment" },
@@ -76,6 +77,14 @@ function Icon({ name, className }: { name: string; className?: string }) {
           <circle cx="9" cy="7" r="4" />
           <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
           <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      );
+    case "bookings":
+      return (
+        <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <path d="M16 2v4M8 2v4M3 10h18" />
+          <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
         </svg>
       );
     default:

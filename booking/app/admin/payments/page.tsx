@@ -147,7 +147,7 @@ export default function AdminPaymentsPage() {
                 <div className="font-mono text-[10px] tracking-[0.1em] text-zinc-500">
                   {p.method} · ref{" "}
                   <span className="text-zinc-300">
-                    {p.gcashReference ?? "—"}
+                    {p.referenceNumber ?? "—"}
                   </span>
                 </div>
                 <div className="mt-2 text-xs text-zinc-400">

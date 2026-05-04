@@ -4,9 +4,10 @@ import Link from "next/link";
 import UpcomingEvents from "@/components/UpcomingEvents";
 
 const SECTIONS = [
+  { href: "/admin/bookings", label: "Bookings", desc: "Create & manage all bookings", icon: "bookings" },
+  { href: "/admin/schedule", label: "Schedule", desc: "Calendar view", icon: "calendar" },
   { href: "/admin/games", label: "Games", desc: "Create and manage games", icon: "game" },
   { href: "/admin/rooms", label: "Rooms", desc: "Courts, tables, prices", icon: "room" },
-  { href: "/admin/schedule", label: "Schedule", desc: "Calendar view", icon: "calendar" },
   { href: "/admin/payments", label: "Payments", desc: "Review GCash proofs", icon: "payment" },
   { href: "/admin/users", label: "Users", desc: "Accounts, roles, bans", icon: "users" },
   { href: "/admin/audit-logs", label: "Audit Logs", desc: "Request & error logs", icon: "audit" },

@@ -87,7 +87,7 @@ export default function CheckoutPage() {
     try {
       const form = new FormData();
       form.append("proof", file);
-      if (reference) form.append("gcashReference", reference);
+      if (reference) form.append("referenceNumber", reference);
       const payment = await apiUpload<PaymentDto>(
         `/api/bookings/${bookingId}/payment/proof`,
         form

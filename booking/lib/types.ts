@@ -22,6 +22,8 @@ export interface UserDto {
   bannedAt: string | null;
   creationTime: string;
   trustScore: number;
+  outstandingBalance: number;
+  isProvisional: boolean;
 }
 
 export interface TrustHistoryDto {
@@ -64,7 +66,10 @@ export type PaymentStatus =
   | "AwaitingProof"
   | "Submitted"
   | "Approved"
-  | "Rejected";
+  | "Rejected"
+  | "Outstanding";
+
+export type PaymentMethod = "GCash" | "Cash" | "OnlineBanking";
 
 export type QueueState = "Queued" | "InMatch" | "Left";
 
@@ -116,12 +121,13 @@ export interface PaymentDto {
   roomName: string | null;
   bookingStartTime: string | null;
   bookingEndTime: string | null;
-  method: "GCash";
+  method: PaymentMethod;
   status: PaymentStatus;
   amount: number;
-  gcashReference: string | null;
+  referenceNumber: string | null;
   proofS3Key: string | null;
   proofPresignedUrl: string | null;
+  remarks: string | null;
   rejectionReason: string | null;
   reviewedAt: string | null;
 }
@@ -349,4 +355,45 @@ export interface UpcomingEventDto {
   notes: string | null;
   matchSize: number | null;
   seatRate: number | null;
+}
+
+export interface PaymentSummaryDto {
+  id: string;
+  method: PaymentMethod;
+  status: PaymentStatus;
+  amount: number;
+  referenceNumber: string | null;
+  remarks: string | null;
+  proofPresignedUrl: string | null;
+  reviewedAt: string | null;
+}
+
+export interface AdminBookingListDto {
+  id: string;
+  roomId: string;
+  roomName: string;
+  gameName: string;
+  bookedByUserId: string;
+  bookerName: string;
+  bookerEmail: string;
+  bookerIsProvisional: boolean;
+  type: BookingType;
+  status: BookingStatus;
+  startTime: string;
+  endTime: string;
+  totalAmount: number;
+  notes: string | null;
+  holdExpiresAt: string | null;
+  payment: PaymentSummaryDto | null;
+}
+
+export interface CreateAdminBookingRequest {
+  userId: string;
+  roomId: string;
+  startTime: string;
+  hours: number;
+  notes?: string | null;
+  paymentMethod: PaymentMethod;
+  referenceNumber?: string | null;
+  remarks?: string | null;
 }
