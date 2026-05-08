@@ -305,7 +305,7 @@ export default function GameCalendarPage() {
   }
 
   return (
-    <main className="min-h-screen bg-pitch pt-28 pb-40">
+    <main className="min-h-screen bg-pitch pt-12 pb-40">
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
         <div className="flex items-end justify-between mb-12 gap-6 flex-wrap">
           <div>

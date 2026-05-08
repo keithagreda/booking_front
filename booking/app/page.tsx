@@ -123,7 +123,7 @@ export default function Home() {
       {/* ════════════════════════════════════════════════════
           01 — HERO
       ════════════════════════════════════════════════════ */}
-      <section className="relative min-h-screen bg-pitch flex flex-col justify-end overflow-hidden">
+      <section className="relative min-h-screen pt-12 bg-pitch flex flex-col justify-end overflow-hidden">
 
         {/* Court line pattern */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-end overflow-hidden">
@@ -246,7 +246,7 @@ export default function Home() {
       {/* ════════════════════════════════════════════════════
           02 — THE VENUE
       ════════════════════════════════════════════════════ */}
-      <section id="venue" className="bg-chalk py-24 lg:py-36">
+      <section id="venue" className="bg-chalk py-24 lg:py-12">
         <div
           ref={venueSection.ref}
           className={`max-w-7xl mx-auto px-6 lg:px-10 reveal ${venueSection.visible ? "visible" : ""}`}
@@ -420,7 +420,7 @@ export default function Home() {
       {/* ════════════════════════════════════════════════════
           03 — COURTS
       ════════════════════════════════════════════════════ */}
-      <section className="bg-chalk py-24 lg:py-36">
+      <section className="bg-chalk py-24 lg:py-20">
         <div
           ref={courtsSection.ref}
           className={`max-w-7xl mx-auto px-6 lg:px-10 reveal ${courtsSection.visible ? "visible" : ""}`}

@@ -18,7 +18,7 @@ export default function BookingPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-chalk pt-28 pb-28">
+    <main className="min-h-screen bg-chalk pt-12 pb-28">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <div className="mb-16 lg:mb-20">
           <span
